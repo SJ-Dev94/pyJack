@@ -1,0 +1,72 @@
+Objective
+
+The player attempts to beat the dealer by getting their card count to be either exactly 21 or as close to 21 as possible. 
+
+
+
+General rules of pyJack
+
+If a player hits 21, the player wins.
+If the dealer hits 21, the dealer wins.
+If both the player and the dealer hit 21, the game is a tie.
+If the player goes over 21, the dealer wins.
+If the player and the dealer do not go over 21, the game is won by whoever is numerically closest to 21.
+
+
+
+Card rules
+
+If an ace is drawn the participants can decide whether the value is 1 or 11.
+The game is played with a standard deck of 52 cards, [ace, 2, 3, 4, 5, 6, 7, 8, 9, 10, jack, queen, king].
+Each card has a corresponding suit [Clubs, Hearts, Diamonds, Spades]
+There are 4 of each numerical value cards, each with their own suit. 
+
+
+Shuffle Rules
+
+At the beginning of the game, each card will be a assigned a suit. 
+The deck will then be randomized. 
+The deck does not get randomized again until a new game begins. 
+
+
+
+Betting
+
+Minimum bet is $2, maximum bet is $500.
+A player recieves $500 to start.
+If a players bank reaches zero, the game is over. 
+
+
+
+Naturals
+
+If a player gets a 10, Jack, Queen, or King in combination with an Ace on their first hand, this is a blackjack.
+The dealer can also get a natural blackjack. 
+
+
+
+Gameplay
+
+
+Dealer Rules
+
+The dealer gives the player two cards.
+The dealer gives themselves two cards. 
+When the dealer has served two cards to all players, the dealer must look at their two face down cards.
+If the dealer has 17 or more, the dealer must stand.
+If the dealer has 16 or below, they must take a card. 
+The dealer must continue until the total is 17 or more. 
+If the dealer is at 17 or more, they must stand.
+If the dealer has an ace and counting it as 11 would bring the total to 17, it must be counted as 11 and stand.
+
+Player rules
+
+After the dealer has given two cards, the player must decide whether to hit or stand.
+Hit means add +1 cards, stand means add no cards.
+
+
+
+
+
+
+
