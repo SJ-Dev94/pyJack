@@ -1,0 +1,27 @@
+general logic
+
+create a deck of 52 cards
+create card class with suit and rank
+create deck class 
+
+52 cards get added to the deck
+A player has $500 to start with and makes a bet prior to the cards dealing out
+This bet is added to the pot
+A card gets removed from the deck array when its dealed out
+Show dealers cards
+show players cards
+ask player if they want to hit or stand
+if players hand is <21, ask if they like to hit again
+if players hand == 21, blackjack
+if player stands, the dealer plays their hand
+dealer must always hit unless their hand is >= 17, in which case they can stand
+determine winner based on win conditions
+
+win conditions
+blackjack = hand of 21
+if no one has black jack winner = the player with the closest hand to 21
+if winner, add winnings to PlayerBank.
+if loser, subtract losses from PlayerBank
+if PlayerBank = 0, time to go home!
+
+
