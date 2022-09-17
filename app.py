@@ -21,8 +21,9 @@ values = {'Two': 2,
           }
 
 #Determines whether game is active
-activeGame = False
+global activeGame
 
+global currentlyPlaying 
 
 #Creates a card object with a suit and a rank
 #adds method to combine suit and rank
@@ -44,69 +45,175 @@ class Deck(Card):
             for rank in ranks:
                 #uses the outer and inner loop to append the cards to the deck array
                 self.deck.append(Card(suit,rank))
+                
     def __str__(self):
         #holds all of the cards in the deck
         composition = ''
         for card in self.deck:
             composition += card.__str__()
         return 'Card Deck: ' + composition
+    
     def shuffle(self):
         random.shuffle(self.deck)
+        
     def dealCards(self):
-        card = self.deck.pop()
-        return card
+        oneCard = self.deck.pop()
+        return oneCard
  
 class Hand:
+   
     def __init__(self):
         self.cards = []
         self.cardValue = 0
+        self.aces = 0
+   
     def addCard(self, card):
         self.cards.append(card)
         self.cardValue += values[card.rank]
+        if card.rank == 'Ace':
+            self.aces += 1
+    
+    def modifyAce(self):
+        while self.cardValue > 21 and self.aces:
+            self.cardValue -= 10
+            self.aces -= 1
+        
+        
     
 class playerChips:
+    
     def __init__(self):
         self.playerBank = 500
         self.bet = 0
+    
     def winningHand(self):
-        self.startingMoney += self.bet
+        self.playerBank += self.bet
+    
     def losingHand(self):
         self.playerBank -= self.bet
+
 
 def bets(playerChips):
     while True:
         try:
             playerChips.bet = int(input('Place your bet: '))
-        except inputError:
+        except ValueError:
             print('Bet must be a number between 0-500')   
         else:
-            if playerChips.bet >= 500 or playerChips.playerBank <  playerChips.bet:
+            if playerChips.bet >= 500:
                 print('This bet cannot be made.')
             else:
                 break
+
 def hit(deck, hand):
-    hand.addCard(deck.deal())
-
-def hitOrStand(deck, hand):
-    while True:
-        question = input("Hit or Stand? Type 'hit' or 'stand' ")
-        if question[0].lower() == 'hit':
-            hit(deck,hand)
-        elif question[0].lower() == 'stand':
-            print ('Stand. Dealers turn.')
-            activeGame = False
-        else:
-            print("Try again")
-            continue
-        break
-deck1 = Deck()
-deck1.shuffle()
-p1 = Hand()
-p1.addCard(deck1.dealCards())
-p1.addCard(deck1.dealCards())
-p1.cardValue
-
-for card in p1.cards:
-    print(card)
+    hand.addCard(deck.dealCards())
+    hand.modifyAce()
     
 
+def hitOrStand(deck, hand): #maybe seperate these into their own functions
+    global currentlyPlaying
+    
+    while currentlyPlaying:
+        question = input("Hit or Stand? Type 'hit' or 'stand' ")
+        if question[0].lower() == 'hit':
+            hit(deck, hand)
+        elif question[0].lower() == 'stand':
+            print ('Stand. Dealers turn.')
+            currentlyPlaying = False
+    
+        break
+
+def showLimitedHand(player, dealer):
+    print("Dealers Hand:")
+    print("First Card Hidden and", dealer.cards[1])
+    print('Players Hand: \n', player.cards[0],'and', player.cards[1])
+
+def showAllHands(player, dealer):
+    print("Dealers Hand", dealer.cards[0, 1])
+    print("Dealers Value", dealer.cardValue)
+    print("Players Hand", player.cards)
+    print("Players Value", player.cardValue)
+    
+#
+def playerBust(player, dealer, chips):
+    print("Player busts")
+    chips.losingHand()
+    
+def playerWinner(self, player, dealer, chips):
+    print("Winner")
+    chips.winningHand()
+    
+def dealerWin(player, dealer, chips):
+    print("Dealer wins!")
+    chips.losingHand()
+
+def dealerBust(player, dealer, chips):
+    print("Dealer Busts")
+    chips.losingHand()
+    
+def tie(player, dealer):
+    print("It's a tie!")
+
+
+
+while True:
+    
+    currentlyPlaying = True
+    
+    #opening game text
+    print("Welcome to Blackjack. Hit 21 to win!")
+    deck1 = Deck()
+    deck1.shuffle()
+    #player 1
+    p1hand = Hand()
+    p1hand.addCard(deck1.dealCards()) #revise these
+    p1hand.addCard(deck1.dealCards()) #revise these
+    
+    #dealer1
+    d1hand = Hand()
+    d1hand.addCard(deck1.dealCards()) #revise these
+    d1hand.addCard(deck1.dealCards()) #revise these
+
+    p1Chips = playerChips()
+    
+    bets(playerChips)
+    
+    while currentlyPlaying:
+        
+        hitOrStand(deck1, p1hand)
+        
+        showLimitedHand(p1hand, d1hand)
+        
+        if p1hand.cardValue > 21:
+            playerBust(p1hand, d1hand, p1Chips)
+            break
+        
+        if p1hand.cardValue <= 21:
+            while d1hand.cardValue < 17:
+                hit(deck1, d1hand)
+                
+        showAllHands(p1hand, d1hand)
+        
+        if d1hand.value > 21:
+            dealerBust(p1hand, d1hand, playerChips)
+            
+        elif d1hand.cardValue > p1hand.cardValue:
+            dealerWin(p1hand, d1hand, playerChips)
+        
+        elif d1hand.cardValue < p1hand.cardValue:
+            playerWinner(p1hand, d1hand, playerChips)
+        
+        else:
+            tie(p1hand, d1hand)
+    
+    print("Players current winnings are:", p1Chips.playerBank )
+    
+    newRound = input("Play again? Enter 'Yes' or 'No' ")
+    
+    if newRound[0].lower() == 'Yes':
+        continue
+    
+    else:
+        print("See you next time!")
+
+    break        
