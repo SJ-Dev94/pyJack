@@ -129,27 +129,27 @@ def showLimitedHand(player, dealer):
     print('Players Hand: \n', player.cards[0],'and', player.cards[1])
 
 def showAllHands(player, dealer):
-    print("Dealers Hand", dealer.cards[0, 1])
+    print("Dealers Hand", dealer.cards[0])
     print("Dealers Value", dealer.cardValue)
-    print("Players Hand", player.cards)
+    print("Players Hand", player.cards[0])
     print("Players Value", player.cardValue)
     
 #
 def playerBust(player, dealer, chips):
     print("Player busts")
-    chips.losingHand()
+    playerChips.losingHand()
     
 def playerWinner(self, player, dealer, chips):
     print("Winner")
-    chips.winningHand()
+    playerChips.winningHand(chips)
     
 def dealerWin(player, dealer, chips):
     print("Dealer wins!")
-    chips.losingHand()
+    playerChips.losingHand(chips)
 
 def dealerBust(player, dealer, chips):
     print("Dealer Busts")
-    chips.losingHand()
+    playerChips.losingHand(chips)
     
 def tie(player, dealer):
     print("It's a tie!")
@@ -180,9 +180,9 @@ while True:
     
     while currentlyPlaying:
         
-        hitOrStand(deck1, p1hand)
-        
         showLimitedHand(p1hand, d1hand)
+        
+        hitOrStand(deck1, p1hand)
         
         if p1hand.cardValue > 21:
             playerBust(p1hand, d1hand, p1Chips)
@@ -194,14 +194,14 @@ while True:
                 
         showAllHands(p1hand, d1hand)
         
-        if d1hand.value > 21:
-            dealerBust(p1hand, d1hand, playerChips)
+        if d1hand.cardValue > 21:
+            dealerBust(p1hand, d1hand, playerChips())
             
         elif d1hand.cardValue > p1hand.cardValue:
-            dealerWin(p1hand, d1hand, playerChips)
+            dealerWin(p1hand, d1hand, playerChips())
         
         elif d1hand.cardValue < p1hand.cardValue:
-            playerWinner(p1hand, d1hand, playerChips)
+            playerWinner(p1hand, d1hand, playerChips())
         
         else:
             tie(p1hand, d1hand)
